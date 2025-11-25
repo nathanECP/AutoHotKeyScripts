@@ -135,6 +135,46 @@ CapsLock:: {
 ; ^Right:: Send("!{Right}")  ; Ctrl+Right → Alt+Right
 ; #HotIf
 
+; ---------------------------
+; SECTION 5 — Alt Tab the same app behavior, matches MacOS cmd + `
+; ---------------------------
+
+!`:: CycleAppWindows(1)
++!`:: CycleAppWindows(-1)
+
+CycleAppWindows(direction) {
+    currentWin := WinGetID("A")
+    if !currentWin
+        return
+
+    pid := WinGetPID(currentWin)
+    winList := WinGetList("ahk_pid " pid)
+
+    if winList.Length < 2
+        return
+
+    ; Find current window's index
+    currentIndex := 0
+    for i, hwnd in winList {
+        if hwnd = currentWin {
+            currentIndex := i
+            break
+        }
+    }
+
+    if currentIndex = 0
+        return
+
+    ; Compute next index with wrap-around
+    nextIndex := currentIndex + direction
+    if nextIndex > winList.Length
+        nextIndex := 1
+    else if nextIndex < 1
+        nextIndex := winList.Length
+
+    WinActivate(winList[nextIndex])
+}
+
 ; ====================================================================
 ; END OF FILE
 ; ====================================================================
