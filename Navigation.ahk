@@ -1,6 +1,10 @@
-﻿; ====================================================================
+﻿#Requires AutoHotkey v2.0
+#SingleInstance Force
+; ====================================================================
 ; AutoHotkey v2 — CapsLock Hyper Key + App Shortcuts
 ; ====================================================================
+
+A_LocalAppData := EnvGet("LocalAppData")
 
 ; ---------------------------
 ; SECTION 0 — CONFIG
@@ -99,8 +103,10 @@ CapsLock:: {
 ~CapsLock & v:: {
     if WinExist("ahk_exe Code.exe")
         WinActivate()
-    else
-        Run("%AppData%\Local\Programs\Microsoft VS Code\Code.exe")
+    else {
+        VSCPath := A_LocalAppData "\Programs\Microsoft VS Code\Code.exe"
+        Run(VSCPath)
+    }
 }
 
 ; WezTerm
@@ -115,8 +121,10 @@ CapsLock:: {
 ~CapsLock & z:: {
     if WinExist("ahk_exe Zed.exe")
         WinActivate()
-    else
-        Run("%AppData%\Local\Programs\Zed\Zed.exe")
+    else {
+        ZedPath := A_LocalAppData "\Programs\Zed\Zed.exe"
+        Run(ZedPath)
+    }
 }
 
 ; ---------------------------
